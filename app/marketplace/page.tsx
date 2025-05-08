@@ -1,4 +1,5 @@
-import { Suspense } from "react"
+'use client'
+import { Suspense, useEffect, useState } from "react"
 import { Filter, SlidersHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -8,8 +9,20 @@ import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import Link from "next/link"
 import MarketplaceSkeleton from "@/components/marketplace/marketplace-skeleton"
+import { useH2IotData } from "@/hooks/iot.data.hooks"
 
 export default function MarketplacePage() {
+  const {h2IotDataState, fetchh2IotData} = useH2IotData()
+
+  console.log(h2IotDataState);
+
+  useEffect(() => {
+    if (!h2IotDataState || h2IotDataState.length === 0) {
+      fetchh2IotData();
+    }
+  }, [fetchh2IotData]);
+
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
@@ -41,13 +54,13 @@ export default function MarketplacePage() {
         <Suspense fallback={<MarketplaceSkeleton />}>
           <TabsContent value="all" className="mt-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {Array.from({ length: 9 }).map((_, i) => (
-                <MarketplaceCard key={i} id={i} />
-              ))}
+            {h2IotDataState.map((lot, index) => (
+              <MarketplaceCard key={index} id={index} lot={lot} />
+            ))}
             </div>
           </TabsContent>
 
-          <TabsContent value="active" className="mt-6">
+          {/* <TabsContent value="active" className="mt-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {Array.from({ length: 6 }).map((_, i) => (
                 <MarketplaceCard key={i} id={i} />
@@ -69,14 +82,14 @@ export default function MarketplacePage() {
                 <MarketplaceCard key={i} id={i} />
               ))}
             </div>
-          </TabsContent>
+          </TabsContent> */}
         </Suspense>
       </Tabs>
     </div>
   )
 }
 
-function MarketplaceCard({ id }: { id: number }) {
+function MarketplaceCard({ id, lot}: { id: number, lot: any}) {
   return (
     <Card className="overflow-hidden">
       <div className="h-48 bg-gradient-to-r from-blue-500/20 to-green-500/20 flex items-center justify-center">
@@ -86,16 +99,16 @@ function MarketplaceCard({ id }: { id: number }) {
       </div>
       <CardHeader className="pb-2">
         <div className="flex justify-between items-start">
-          <CardTitle>Hydrogen Lot #{1000 + id}</CardTitle>
-          <Badge variant={id % 3 === 0 ? "destructive" : "default"}>{id % 3 === 0 ? "Ending Soon" : "Active"}</Badge>
+          <CardTitle>{lot.organizationName}</CardTitle>
+          <Badge variant="default">Available</Badge>
         </div>
-        <CardDescription>Producer: Green Energy #{2000 + id}</CardDescription>
+        <CardDescription>Produced on: {new Date(lot.productionDate).toLocaleDateString()}</CardDescription>
       </CardHeader>
       <CardContent className="pb-2">
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div>
             <p className="text-sm text-muted-foreground">Amount</p>
-            <p className="font-medium">{25 + id * 5} kg</p>
+            <p className="font-medium">{lot.availableHydrogenKg} kg</p>
           </div>
           <div>
             <p className="text-sm text-muted-foreground">Starting Bid</p>

@@ -3,6 +3,7 @@
 export interface User {
   id: string
   name: string
+  email: string
   walletAddress: string
   role: "producer" | "buyer" | "transporter"
   createdAt: Date

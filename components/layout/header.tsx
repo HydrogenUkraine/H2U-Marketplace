@@ -2,11 +2,24 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { Menu, X } from "lucide-react"
+import { usePathname, useRouter } from "next/navigation"
+import { Menu, X, LogOut, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ModeToggle } from "@/components/mode-toggle"
 import { cn } from "@/lib/utils"
+import { useAtom } from "jotai"
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { useAuth } from "@/hooks/auth.hooks"
+import { useLogout } from "@privy-io/react-auth"
 
 const navigation = [
   { name: "Dashboard", href: "/" },
@@ -18,6 +31,29 @@ const navigation = [
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const pathname = usePathname()
+  const router = useRouter()
+
+  const {authState, logout} = useAuth()
+  const { logout: privyLogout } = useLogout()
+
+  const handleLogout = async () => {
+    try {
+      await logout()
+      await privyLogout();
+      router.push("/auth/login")
+    } catch (error) {
+      console.error("Error logging out:", error)
+    }
+  }
+
+  const getUserInitials = () => {
+    if (!authState.user?.name) return "U"
+
+    const nameParts = authState.user.name.split(" ")
+    if (nameParts.length === 1) return nameParts[0].charAt(0).toUpperCase()
+
+    return (nameParts[0].charAt(0) + nameParts[nameParts.length - 1].charAt(0)).toUpperCase()
+  }
 
   return (
     <header className="bg-background border-b">
@@ -59,7 +95,32 @@ export default function Header() {
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-4">
           <ModeToggle />
-          <Button>Connect Wallet</Button>
+
+          {authState.isAuthenticated ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                  <Avatar className="h-8 w-8">
+                    <AvatarFallback>{getUserInitials()}</AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => router.push("/profile")}>
+                  <User className="mr-2 h-4 w-4" />
+                  <span>Profile</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleLogout}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Log out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Button onClick={() => router.push("/auth/login")}>Sign In</Button>
+          )}
         </div>
       </nav>
 
@@ -101,7 +162,32 @@ export default function Header() {
               </div>
               <div className="py-6 flex flex-col gap-4">
                 <ModeToggle />
-                <Button>Connect Wallet</Button>
+                {authState.isAuthenticated ? (
+                  <>
+                    <div className="flex items-center gap-2 px-3 py-2">
+                      <Avatar className="h-8 w-8">
+                        <AvatarFallback>{getUserInitials()}</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <p className="text-sm font-medium">{authState.user?.name || authState.user?.email}</p>
+                        <p className="text-xs text-muted-foreground">{authState.user?.email}</p>
+                      </div>
+                    </div>
+                    <Button variant="outline" onClick={handleLogout} className="justify-start">
+                      <LogOut className="mr-2 h-4 w-4" />
+                      Log out
+                    </Button>
+                  </>
+                ) : (
+                  <Button
+                    onClick={() => {
+                      router.push("/auth/login")
+                      setMobileMenuOpen(false)
+                    }}
+                  >
+                    Sign In
+                  </Button>
+                )}
               </div>
             </div>
           </div>

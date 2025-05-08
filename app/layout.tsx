@@ -5,6 +5,8 @@ import "./globals.css"
 import Header from "@/components/layout/header"
 import Footer from "@/components/layout/footer"
 import { ThemeProvider } from "@/components/theme-provider"
+import PrivyProviders from "@/components/privy-provider"
+import { JotaiProvider } from "@/components/jotai-provider"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -22,13 +24,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-          <div className="flex min-h-screen flex-col">
-            <Header />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
-        </ThemeProvider>
+        <PrivyProviders>
+          <JotaiProvider>
+            <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
+              <div className="flex min-h-screen flex-col">
+                <Header />
+                <main className="flex-1">{children}</main>
+                <Footer />
+              </div>
+            </ThemeProvider>
+          </JotaiProvider>
+        </PrivyProviders>
       </body>
     </html>
   )
