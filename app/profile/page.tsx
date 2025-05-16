@@ -8,9 +8,11 @@ import { Bell, Edit, Wallet, Droplets, Zap } from "lucide-react"
 import UserNFTs from "@/components/profile/user-nfts"
 import TransportStatus from "@/components/profile/transport-status"
 import UserSettings from "@/components/profile/user-settings"
+import { AuthGuard } from "@/components/auth/auth-guard"
 
 export default function ProfilePage() {
   return (
+    <AuthGuard>
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col md:flex-row gap-6">
         <div className="md:w-1/3 space-y-6">
@@ -146,5 +148,6 @@ export default function ProfilePage() {
         </div>
       </div>
     </div>
+    </AuthGuard>
   )
 }

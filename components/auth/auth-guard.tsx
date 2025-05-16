@@ -27,7 +27,7 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
       const performLogout = async () => {
         try {
           await privyLogout();
-          router.push("/login"); // Redirect to login page
+          router.push("/auth/login"); // Redirect to login page
         } catch (error) {
           console.error("Privy logout failed:", error);
         }
