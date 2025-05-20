@@ -26,6 +26,7 @@ const navigation = [
   { name: "Marketplace", href: "/marketplace" },
   { name: "Transporters", href: "/transporters" },
   { name: "Profile", href: "/profile" },
+  { name: "Oracle", href: "/oracle/update-price" },
 ]
 
 export default function Header() {
