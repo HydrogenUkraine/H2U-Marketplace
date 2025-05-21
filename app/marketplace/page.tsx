@@ -17,7 +17,6 @@ import { Spinner } from "@/components/ui/spinner"
 
 export default function MarketplacePage() {
   const {marketplaceListings, fetchMarketplaceListings} = useMarketplace();
-  console.log(marketplaceListings);
 
   useEffect(() => {
       fetchMarketplaceListings();
@@ -142,7 +141,7 @@ function MarketplaceCard({ id, lot}: { id: number, lot: any}) {
           </div>
           <div>
             <p className="text-sm text-muted-foreground">Price</p>
-            <p className="font-medium">{lot.price} SOL/kg</p>
+            <p className="font-medium">{lot.price} USDC/kg</p>
           </div>
           <div>
             <p className="text-sm text-muted-foreground">Market Guardian</p>

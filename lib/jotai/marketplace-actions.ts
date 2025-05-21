@@ -21,7 +21,6 @@ export const fetchMarketplaceListingsAtom = atom(
       // Fetch listings
       const response = await api.get('/marketplace/listings');
       let listings = response.data;
-      console.log("Listings = ", listings);
   
       set(marketplaceAtom, {
         data: listings,
@@ -50,7 +49,6 @@ export const fetchMarketplaceListingsAtom = atom(
           offeredPrice,
         });
         const updatedListing: Listing = response.data;
-        console.log("Bid placed successfully:", updatedListing);
   
         // Update marketplaceAtom with the updated listing
         const currentMarketplace = get(marketplaceAtom);

@@ -10,7 +10,7 @@ import { useOracle } from "@/hooks/oracle.hooks";
 
 interface BidPageProps {
   amount: number; // Initial amount in kg
-  pricePerKg: number; // Initial price per kg in SOL (will be overridden by oracle price)
+  pricePerKg: number; // Initial price per kg in USDC (will be overridden by oracle price)
 }
 
 export default function BidForm({ props }: { props: BidPageProps }) {
@@ -119,13 +119,13 @@ export default function BidForm({ props }: { props: BidPageProps }) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="price">Price per kg (SOL)</Label>
+            <Label htmlFor="price">Price per kg (USDC)</Label>
             <div className="flex items-center gap-2">
               <Slider
                 id="price"
                 min={minPrice}
                 max={maxPrice}
-                step={0.1}
+                step={1}
                 value={[pricePerKg]}
                 onValueChange={(value) => setPricePerKg(value[0])}
                 className="flex-1"
@@ -138,29 +138,29 @@ export default function BidForm({ props }: { props: BidPageProps }) {
                 className="w-20"
                 min={minPrice}
                 max={maxPrice}
-                step={0.1}
+                step={1}
                 disabled={minPrice === 0 && maxPrice === Infinity} // Disable until oracle price is loaded
               />
             </div>
             <p className="text-xs text-muted-foreground">
-              Bid between {minPrice} and {maxPrice} SOL/kg. Current bid is {pricePerKg} SOL/kg.
+              Bid between {minPrice} and {maxPrice} USDC/kg. Current bid is {pricePerKg} USDC/kg.
             </p>
           </div>
 
           <div className="p-3 rounded-lg bg-muted">
             <div className="flex justify-between mb-1">
               <p className="text-sm">Total Bid Amount</p>
-              <p className="text-sm font-bold">{totalPrice.toFixed(2)} SOL</p>
+              <p className="text-sm font-bold">{totalPrice.toFixed(2)} USDC</p>
             </div>
             <p className="text-xs text-muted-foreground">
-              {amount} kg × {pricePerKg} SOL/kg
+              {amount} kg × {pricePerKg} USDC/kg
             </p>
           </div>
 
           <Button
             className="w-full"
             onClick={handlePlaceBid}
-            disabled={isLoading || (minPrice === 0 && maxPrice === Infinity)}
+            disabled={isLoading || (minPrice === 0 && maxPrice === Infinity) || amount === 0}
           >
             {isLoading ? "Placing Bid..." : "Place Bid"}
           </Button>

@@ -11,7 +11,6 @@ import { useMarketplace } from "@/hooks/marketplace.hooks";
 
 export default function LotDetailPage() {
   const { currentListing } = useMarketplace();
-  console.log(currentListing);
 
   if (!currentListing) {
     return (
@@ -49,7 +48,7 @@ export default function LotDetailPage() {
 
           <div className="flex gap-2">
             <Button variant="outline">Share</Button>
-            <Button>Buy Now ({currentListing.price} SOL/kg)</Button>
+            <Button>Buy Now ({currentListing.price} USDC/kg)</Button>
           </div>
         </div>
       </div>
@@ -211,18 +210,18 @@ export default function LotDetailPage() {
 
                 <div>
                   <p className="text-sm text-muted-foreground">Current Highest Bid</p>
-                  <p className="text-2xl font-bold">{(currentListing.price).toFixed(2)} SOL/kg</p>
+                  <p className="text-2xl font-bold">{(currentListing.price).toFixed(2)} USDC/kg</p>
                   <p className="text-sm text-muted-foreground">by Buyer #{currentListing.producer.slice(0, 4)}</p>
                 </div>
 
                 <div>
                   <p className="text-sm text-muted-foreground">Starting Bid</p>
-                  <p className="font-medium">{(currentListing.price).toFixed(2)} SOL/kg</p>
+                  <p className="font-medium">{(currentListing.price).toFixed(2)} USDC/kg</p>
                 </div>
 
                 <div>
                   <p className="text-sm text-muted-foreground">Buyout Price</p>
-                  <p className="font-medium">{currentListing.price} SOL/kg</p>
+                  <p className="font-medium">{currentListing.price} USDC/kg</p>
                 </div>
 
                 <div>
@@ -234,7 +233,7 @@ export default function LotDetailPage() {
 
                 <div>
                   <Button className="w-full mb-2">
-                    Buy Now ({(currentListing.price * amountKg).toFixed(2)} SOL total)
+                    Buy Now ({(currentListing.price * amountKg).toFixed(2)} USDC total)
                   </Button>
                   <p className="text-xs text-center text-muted-foreground">
                     Buy the entire lot immediately at the buyout price

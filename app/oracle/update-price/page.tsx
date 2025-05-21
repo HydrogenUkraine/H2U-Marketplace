@@ -10,8 +10,6 @@ const UpdatePricePage = () => {
   const [maxPrice, setMaxPrice] = useState<number | ''>('');
   const {authState} = useAuth()
 
-  console.log(oraclePrice);
-
   // Fetch oracle price on component mount
   useEffect(() => {
     fetchOraclePrice();

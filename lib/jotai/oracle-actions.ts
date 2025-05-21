@@ -29,7 +29,6 @@ export const fetchOraclePriceAtom = atom(
     try {
       const response = await api.get('/oracle/price');
       const { minPricePerKg, maxPricePerKg, lastUpdated } = response.data.data;
-      console.log("Oracle price fetched:", { minPricePerKg, maxPricePerKg, lastUpdated });
 
       set(oraclePriceAtom, {
         minPricePerKg,
@@ -59,7 +58,6 @@ export const updateOraclePriceAtom = atom(
 
     try {
       await api.post('/oracle/price', { newMin, newMax });
-      console.log("Oracle price updated successfully:", { newMin, newMax });
 
       // After updating, fetch the latest price to ensure state consistency
       const response = await api.get('/oracle/price');

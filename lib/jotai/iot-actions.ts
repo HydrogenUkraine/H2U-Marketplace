@@ -9,7 +9,6 @@ export const fetchH2IotData = atom(
     try {
       const response = await api.get("/iot-data/processed");
       if (response.status === 200) {
-        console.log("iot response", response.data);
         const iotData: IotDataState[] = response.data; // assuming API returns an array
         set(h2IotDataStateAtom, iotData);
         options?.onSuccess?.(iotData);
