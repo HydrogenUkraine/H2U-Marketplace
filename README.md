@@ -28,7 +28,6 @@ The frontend provides an intuitive interface for interacting with the underlying
 ```
 
 ## Installation
-- 1.	Clone the repository:
 ```
 git clone https://github.com/HydrogenUkraine/H2U-Marketplace.git
 cd H2U-Marketplace
@@ -37,7 +36,6 @@ pnpm run dev
 ```
 
 ## 🔑 Features
-	•	User Authentication: Connect and authenticate using Solana wallets (e.g., Phantom, Solflare).
 	•	Hydrogen Production Registration: Producers can register hydrogen production batches, which are tokenized on-chain.
 	•	Marketplace Listings: Producers can list hydrogen tokens for sale, specifying quantity and price.
 	•	Purchasing Mechanism: Buyers can purchase hydrogen tokens using USDC, with transactions handled securely via smart contracts.
